@@ -29,12 +29,9 @@ bool miller_rabin(u64 n) {
 
         if (u64 x = mod_pow(a, d, n); x != 1 && x != n - 1) {
             bool pp = false;
-            for (int r = 1; r < s; r++) {
+            for (int r = 1; r < s && !pp; r++) {
                 x = u128(x) * x % n;
-                if (x == n - 1) {
-                    pp = true;
-                    break;
-                }
+                if (x == n - 1) pp = true;
             }
 
             if (!pp) return false;
