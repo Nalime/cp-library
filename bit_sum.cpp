@@ -1,10 +1,11 @@
+// Everything is 1-indexed internally and 0-indexed externally
 struct bit {
     int n;
-    vt<ll> a;
+    vector<ll> a;
 
     bit(int k) : n(k + 1), a(n) {}
 
-    bit(vt<int> b) : n(sz(b) + 1), a(n) {
+    bit(vector<int> &b) : n(b.size() + 1), a(n) {
         for (int i = 1; i < n; i++) {
             a[i] += b[i - 1];
             if (int t = i + (i & -i); t < n) {
@@ -12,9 +13,6 @@ struct bit {
             }
         }
     }
-
-    // The functions below are all
-    // 1-indexed internally and 0-indexed externally
 
     ll query0(int i) {
         ll r = 0;
