@@ -23,4 +23,3 @@ struct range_bit {
         b.update(r, r * d);
     }
 };
-
