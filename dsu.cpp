@@ -1,5 +1,5 @@
 struct dsu {
-    vt<int> p;
+    vector<int> p;
 
     dsu(int n) : p(n + 1, -1) {}
 

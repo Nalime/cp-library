@@ -1,17 +1,4 @@
-using pll = pair<ll, ll>;
-
 const ll inf = 1ll << 60;
-
-vt<ll> egcd(ll a, ll b) {
-    ll s0 = 1, t0 = 0, s1 = 0, t1 = 1;
-    while (b) {
-        ll d = a / b;
-        tie(a, b) = pll(b, a % b);
-        tie(s0, s1) = pll(s1, s0 - d * s1);
-        tie(t0, t1) = pll(t1, t0 - d * t1);
-    }
-    return {a, s0, t0};
-}
 
 ll dio(ll a, ll b, ll c, ll x1, ll x2, ll y1, ll y2) {
     if (x1 > x2 || y1 > y2) return 0;
@@ -26,40 +13,36 @@ ll dio(ll a, ll b, ll c, ll x1, ll x2, ll y1, ll y2) {
         return x * y;
     }
 
-    vt<ll> eg = egcd(abs(a), abs(b));
-    ll g = eg[0], x = eg[1], y = eg[2];
+    auto [g, x, y] = egcd(abs(a), abs(b));
     if (c % g) return 0;
-
-    int sign_a = a > 0 ? 1 : -1;
-    int sign_b = b > 0 ? 1 : -1;
     a /= g, b /= g, c /= g;
 
-    x *= c * sign_a, y *= c * sign_b;
+    int sign_a = (a > 0) - (a < 0);
+    int sign_b = (b > 0) - (b < 0);
+    x *= sign_a * c, y *= sign_b * c;
 
-    auto shift = [&](ll s) {
-        x += b * s;
-        y -= a * s;
+    auto shift = [&](int s) {
+        x += s * b;
+        y -= s * a;
     };
-
-    ll l = -inf, r = inf;
 
     shift((x1 - x) / b);
     if (x < x1) shift(sign_b);
-    l = max(x, l);
+    ll min_x = x;
 
     shift((x2 - x) / b);
     if (x > x2) shift(-sign_b);
-    r = min(x, r);
+    ll max_x = x;
 
-    shift(-(y1 - y) / a);
+    shift((y - y1) / a);
     if (y < y1) shift(-sign_a);
-    if (sign_a != sign_b) l = max(x, l);
-    else r = min(x, r);
+    if (sign_a != sign_b) min_x = max(x, min_x);
+    else max_x = min(x, max_x);
 
-    shift(-(y2 - y) / a);
+    shift((y - y2) / a);
     if (y > y2) shift(sign_a);
-    if (sign_a != sign_b) r = min(x, r);
-    else l = max(x, l);
+    if (sign_a == sign_b) min_x = max(x, min_x);
+    else max_x = min(x, max_x);
 
-    return max((r - l) / abs(b) + 1, 0ll);
+    return max((max_x - min_x) / abs(b) + 1, 0ll);
 }
