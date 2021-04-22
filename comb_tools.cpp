@@ -16,7 +16,7 @@ ll P(int n, int r) {
 }
 
 ll C(int n, int r) {
-    return 0 <= r && r <= n ? P(n, r) * finv[r] % mod : 0;
+    return 0 <= r && r <= n ? fact[n] * finv[n - r] % mod * finv[r] % mod : 0;
 }
 
 ll H(int n, int r) {
