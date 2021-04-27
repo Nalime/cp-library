@@ -11,8 +11,8 @@ struct min_queue {
     }
 
     void pop() {
-        if (sz(f) == 1) {
-            while (sz(b) > 1) {
+        if (f.size() == 1) {
+            while (b.size() > 1) {
                 int x = b.back().first;
                 b.pop_back();
                 f.emplace_back(x, min(x, f.back().second));

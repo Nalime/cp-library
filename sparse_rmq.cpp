@@ -1,19 +1,28 @@
+// K should be a const somewhat bigger than lg N
 struct sparse {
     int n;
-    vt<vt<int>> a;
+    array<vector<int>, K> a;
+    vector<int> lg;
 
-    sparse(vt<int> &b) : n(sz(b)), a(__lg(n) + 1, vt<int>(n)) {
-        copy(all(b), a[0].begin());
-        for (int i = 0; i < __lg(n); i++) {
-            for (int j = 0; j <= n - (2 << i); j++) {
-                a[i + 1][j] = min(a[i][j], a[i][j + (1 << i)]);
+    sparse(vector<int> &b) : n(b.size()), lg(n + 1) {
+        a.fill(vector<int>(n));
+        a[0] = b;
+        for (int k = 0; k < K - 1; k++) {
+            for (int i = 0; i <= n - (2 << k); i++) {
+                a[k + 1][i] = min(a[k][i], a[k][i + (1 << k)]);
             }
+        }
+
+        // precalculate logarithms, optional
+        for (int i = 2; i <= n; i++) {
+            lg[i] = lg[i >> 1] + 1;
         }
     }
 
     // [l, r)
     int query(int l, int r) {
-        int i = __lg(r - l);
-        return min(a[i][l], a[i][r - (1 << i)]);
+        // int k = __lg(r - l);
+        int k = lg[r - l];
+        return min(a[k][l], a[k][r - (1 << k)]);
     }
 };

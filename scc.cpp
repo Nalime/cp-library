@@ -1,3 +1,5 @@
+// Reference: CKHS CP PDFs
+
 // u -> (v, edge_idx)
 // edge_idx is needed for non-simple graphs
 vector<pair<int, int>> adj[N];
