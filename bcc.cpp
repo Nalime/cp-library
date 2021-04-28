@@ -1,5 +1,5 @@
 // u -> (v, edge_idx)
-// edge_idx is needed for non-simple graphs
+// edge_idx is needed for non-simple undirected graphs
 vector<pair<int, int>> adj[N];
 
 vector<vector<int>> bcc(int n) {
