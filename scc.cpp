@@ -1,24 +1,22 @@
 // Reference: CKHS CP PDFs
 
-// u -> (v, edge_idx)
-// edge_idx is needed for non-simple graphs
-vector<pair<int, int>> adj[N];
+vector<int> adj[N];
 
 // returns in topological order
 vector<vector<int>> scc(int n) {
+    int t = 0;
     vector<int> tin(n), low(n);
     vector<bool> in_scc(n);
-    int t = 0;
 
-    vector<vector<int>> ans;
     stack<int> st;
+    vector<vector<int>> ans;
 
-    auto dfs = [&](int u, int e, auto &&f) -> void {
+    auto dfs = [&](int u, auto &&f) -> void {
         tin[u] = low[u] = ++t;
         st.push(u);
 
-        for (auto [v, i] : adj[u]) if (i != e && !in_scc[v]) {
-            if (!tin[v]) f(v, i, f);
+        for (int v : adj[u]) if (!in_scc[v]) {
+            if (!tin[v]) f(v, f);
 
             low[u] = min(low[v], low[u]);
         }
@@ -28,15 +26,17 @@ vector<vector<int>> scc(int n) {
 
             int v;
             do {
-                ans.back().push_back(v = st.top());
-                in_scc[v] = true;
+                v = st.top();
                 st.pop();
+
+                in_scc[v] = true;
+                ans.back().push_back(v);
             } while (v != u);
         }
     };
 
     for (int u = 0; u < n; u++) if (!tin[u]) {
-        dfs(u, -1, dfs);
+        dfs(u, dfs);
     }
 
     reverse(ans.begin(), ans.end());
