@@ -1,21 +1,23 @@
-// K should be a const somewhat bigger than lg N
+// consts: N (max array size), K (lg_floor(N))
 struct sparse {
     int n;
+    static int lg[N];
     array<vector<int>, K> a;
-    vector<int> lg;
 
     sparse(vector<int> &b) : n(b.size()), lg(n + 1) {
-        a.fill(vector<int>(n));
-        a[0] = b;
-        for (int k = 0; k < K - 1; k++) {
-            for (int i = 0; i <= n - (2 << k); i++) {
-                a[k + 1][i] = min(a[k][i], a[k][i + (1 << k)]);
+        // precalculate binary logarithms
+        if (!lg[2]) {
+            for (int i = 2; i < N; i++) {
+                lg[i] = lg[i >> 1] + 1;
             }
         }
 
-        // precalculate logarithms, optional
-        for (int i = 2; i <= n; i++) {
-            lg[i] = lg[i >> 1] + 1;
+        a.fill(vector<int>(n));
+        a[0] = b;
+        for (int k = 0; k < K - 1; k++) {
+            for (int i = 0; i + (2 << k) <= n; i++) {
+                a[k + 1][i] = min(a[k][i], a[k][i + (1 << k)]);
+            }
         }
     }
 

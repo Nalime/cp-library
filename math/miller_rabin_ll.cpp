@@ -9,7 +9,7 @@ const u64 p[] = {
 
 u64 mod_pow(u64 b, u64 e, u64 m) {
     u64 r = 1;
-    for (b %= m; e; e >>= 1, b = u128(b) * b % m) {
+    for (; e; e >>= 1, b = u128(b) * b % m) {
         if (e & 1) r = u128(r) * b % m;
     }
     return r;
@@ -22,7 +22,7 @@ bool miller_rabin(u64 n) {
     u64 d = (n - 1) >> s;
 
     for (u64 a : p) {
-        if (n <= a) return n == a;
+        if (a <= n) return a == n;
 
         if (u64 x = mod_pow(a, d, n); x != 1 && x != n - 1) {
             bool pp = false;
