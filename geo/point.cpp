@@ -1,4 +1,5 @@
-template <class T, class F = long double>
+#warning not checked
+template <class T, class I = long long, class F = double>
 struct point {
     T x, y;
 
@@ -10,8 +11,7 @@ struct point {
     point operator+() const { return *this; }
     point operator-() const { return point(-x, -y); }
 
-    // be careful of overflow
-    T norm() { return x * x + y * y; }
+    I norm() { return I(x) * x + I(y) * y; }
     F abs() { return sqrtl(norm()); }
 
     point& operator+=(const point &o) {
@@ -51,13 +51,13 @@ struct point {
     }
 
     // dot product
-    friend T operator^(const point &s, const point &t) {
-        return s.x * t.x + s.y * t.y;
+    friend I operator^(const point &s, const point &t) {
+        return I(s.x) * t.x + I(s.y) * t.y;
     }
 
     // cross product
-    friend T operator%(const point &s, const point &t) {
-        return s.x * t.y - s.y * t.x;
+    friend I operator%(const point &s, const point &t) {
+        return I(s.x) * t.y - I(s.y) * t.x;
     }
 
     // pair-like comparision
@@ -99,4 +99,4 @@ struct point {
         return os << '(' << t.x << ", " << t.y << ')';
     }
 };
-using pt = point<long long>;
+using pt = point<int>;
