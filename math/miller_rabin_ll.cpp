@@ -22,7 +22,7 @@ bool miller_rabin(u64 n) {
     u64 d = (n - 1) >> s;
 
     for (u64 a : p) {
-        if (a <= n) return a == n;
+        if (a >= n) return a == n;
 
         if (u64 x = mod_pow(a, d, n); x != 1 && x != n - 1) {
             bool pp = false;
