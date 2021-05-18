@@ -1,10 +1,12 @@
 #warning not checked
-template <class T, T M, class I = long long>
+template <class T, T M = 1'000'000'007, class I = long long>
 struct modint {
     T x;
 
     modint() : x() {}
-    modint(T s) {
+
+    template <class U>
+    modint(U s) {
         x = s % M;
         if (x < 0) x += M;
     }
@@ -14,7 +16,7 @@ struct modint {
     modint operator+() const { return *this; }
     modint operator-() const { return modint() - *this; }
 
-    modint inv() {
+    modint inv() const {
         T a = x, b = M, as = 1, bs = 0;
         while (b) {
             T d = a / b;
