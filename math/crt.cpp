@@ -6,8 +6,7 @@
 pair<ll, ll> crt(const vector<ll> &r, const vector<ll> &m) {
     ll r0 = 0, m0 = 1;
     for (int i = 0; i < int(r.size()); i++) {
-        ll m1 = m[i];
-        ll r1 = r[i] % m1;
+        ll m1 = m[i], r1 = r[i] % m1;
         if (r1 < 0) r1 += m1;
 
         auto [g, x, _] = egcd(m0, m1);

@@ -1,7 +1,7 @@
 vector<int> adj[N];
 
 vector<int> topo(int n) {
-    vector<int> ans, vis(n + 1);
+    vector<int> ans, vis(n);
     bool bad = false;
 
     auto dfs = [&](int u, auto &&f) -> void {
